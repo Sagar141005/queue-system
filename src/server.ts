@@ -25,6 +25,7 @@ app.post("/create", (req, res) => {
     id: uuidv4(),
     payload,
     status: "ready",
+    retryCount: 0,
   });
 
   res.status(201).json({ message: "Job created successfully" });
