@@ -1,17 +1,24 @@
 import { queue } from "./queue.ts";
 
+const baseDelay = 30000;
+
 export function worker() {
   function processNext() {
-    const job = queue.dequeue();
+    const job = queue.reserve();
 
     if (!job) {
       console.log("Queue empty. Checking again in 2s...");
       setTimeout(processNext, 2000);
       return;
     }
-    console.log("Processing job", job);
 
-    setTimeout(processNext, 2000);
+    try {
+      console.log("Processing job", job);
+      queue.ack(job.id);
+      processNext();
+    } catch (error) {
+      setTimeout(processNext, baseDelay * Math.pow(2, job.retryCount));
+    }
   }
   processNext();
 }
