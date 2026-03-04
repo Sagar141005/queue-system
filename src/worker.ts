@@ -15,7 +15,7 @@ export function worker() {
     try {
       console.log("Processing job", job);
       queue.ack(job.id);
-      processNext();
+      setTimeout(processNext, 2000);
     } catch (error) {
       setTimeout(processNext, baseDelay * Math.pow(2, job.retryCount));
     }
