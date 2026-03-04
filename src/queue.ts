@@ -1,5 +1,5 @@
 import type { Job, JobRow } from "./types";
-import db from "./db";
+import db from "./db.ts";
 
 const maxRetry = 5;
 
